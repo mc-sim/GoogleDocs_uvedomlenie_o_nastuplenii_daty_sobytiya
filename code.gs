@@ -1,46 +1,48 @@
-function emailsend () //Отправляет e-mail при выполнении условия описанного в if
+function emailsend () //РћС‚РїСЂР°РІР»СЏРµС‚ e-mail РїСЂРё РІС‹РїРѕР»РЅРµРЅРёРё СѓСЃР»РѕРІРёСЏ РѕРїРёСЃР°РЅРЅРѕРіРѕ РІ if
 {
   var sovpadenieDat = in_array(reminder (), perebor_dat());
   if(sovpadenieDat > -1) 
   {
     MailApp.sendEmail(
-                      "1777510@mail.ru",
-                       perebor_dat()[in_array(reminder (), perebor_dat())] + " пройдет рассылка " + vozvrat_temy()[in_array(reminder (), perebor_dat())],                             
-                      'Привет! Поставь пожалуйста в этот график: https://docs.google.com/spreadsheets/d/1TLY22BHVyzA4kLPyG3eQ4Phia2O675Vuywj9ZseVeOI/edit#gid=12 \r\nсвои акции релевантные теме рассылки.'
+                      "your_mail_here@mail.ru",
+                       perebor_dat()[in_array(reminder (), perebor_dat())] + " Р·Р°РєРѕРЅС‡РёС‚СЃСЏ СЃСЂРѕРє РґРµР№СЃС‚РІРёСЏ " + vozvrat_temy()[in_array(reminder (), perebor_dat())],                             
+                      'РџСЂРёРІРµС‚! Р—Р°РєР°РЅС‡РёРІР°РµС‚СЃСЏ СЃСЂРѕРє РґРµР№СЃС‚РІРёСЏ ' + vozvrat_temy()[in_array(reminder (), perebor_dat())]
                      )
   }
 } 
- 
-function reminder ()  //Прибавляет к текущей дате 3 дня. Возвращается не дата, а строка но ее сравнение с содержимым массива perebor_dat() прокатывает
+
+function reminder ()  //РџСЂРёР±Р°РІР»СЏРµС‚ Рє С‚РµРєСѓС‰РµР№ РґР°С‚Рµ 14 РґРЅРµР№. Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ РґР°С‚Р° РІ С„РѕСЂРјР°С‚Рµ DD.MM.YYYY РґР»СЏ СЃСЂР°РІРЅРµРЅРёСЏ СЃ СЃРѕРґРµСЂР¶РёРјС‹Рј РјР°СЃСЃРёРІР° perebor_dat() 
 {
-  var dates = new Date()
-  var reminderMonth = dates.getMonth()+1;
-  var reminderDate = dates.getDate() +3 ;
-  var reminderYear = '2015';
-  return reminderDate + "." + reminderMonth 	+ "." + reminderYear;
+eval(UrlFetchApp.fetch('https://momentjs.com/downloads/moment.js').getContentText()); //РїРѕРґРєР»СЋС‡Р°РµРј Р±РёР±Р»РёРѕС‚РµРєСѓ Moment РґР»СЏ РїСЂР°РІРёР»СЊРЅРѕРіРѕ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёСЏ РґР°С‚С‹
+var result = new Date();
+var result = result.setDate(result.getDate() + 14);
+var result = moment(result).format('DD.MM.YYYY');
+return result; 
 }
 
-function perebor_dat() //Возвращает массив отформатированных значений содержащихся на текущем листе в диапазоне A2:Z2. Проблема с возвратом значений из ячеек AA2, AB2 так как цикл проходит только по алфавиту
+function perebor_dat() //Р’РѕР·РІСЂР°С‰Р°РµС‚ РјР°СЃСЃРёРІ РѕС‚С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅС‹С… Р·РЅР°С‡РµРЅРёР№ СЃРѕРґРµСЂР¶Р°С‰РёС…СЃСЏ РЅР° С‚РµРєСѓС‰РµРј Р»РёСЃС‚Рµ РІ РґРёР°РїР°Р·РѕРЅРµ B2:B20 (Р·Р°РєРѕРјРјРµРЅС‚РёСЂРѕРІР°РЅРЅР°СЏ СЃС‚СЂРѕРєР° - A2:Z2. РџСЂРѕР±Р»РµРјР° СЃ РІРѕР·РІСЂР°С‚РѕРј Р·РЅР°С‡РµРЅРёР№ РёР· СЏС‡РµРµРє AA2, AB2 С‚Р°Рє РєР°Рє С†РёРєР» РїСЂРѕС…РѕРґРёС‚ С‚РѕР»СЊРєРѕ РїРѕ Р°Р»С„Р°РІРёС‚Сѓ)
 {
   var kolonkaplus = [];
-  for (var i=65; i<=90; i++)
+  for (var i=3; i<=21; i++)
   {
-    kolonkaplus.push(Utilities.formatDate(new Date(SpreadsheetApp.getActiveSheet().getRange(String.fromCharCode(i)+'2').getValues()), "GMT+3", "d.M.yyyy"));
+//    kolonkaplus.push(Utilities.formatDate(new Date(SpreadsheetApp.getActiveSheet().getRange(String.fromCharCode(i)+'2').getValues()), "GMT+3", "d.M.yyyy"));
+kolonkaplus.push(Utilities.formatDate(new Date(SpreadsheetApp.getActiveSheet().getRange(String.fromCharCode(66)+(i)).getValues()), "GMT+3", "dd.MM.yyyy"));
   }
   return kolonkaplus;
 }
 
-function vozvrat_temy() //Возвращает массив отформатированных значений содержащихся на текущем листе в диапазоне A1:Z1. Проблема с возвратом значений из ячеек AA1, AB1 так как цикл проходит только по алфавиту
+function vozvrat_temy() //Р’РѕР·РІСЂР°С‰Р°РµС‚ РјР°СЃСЃРёРІ РѕС‚С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅС‹С… Р·РЅР°С‡РµРЅРёР№ СЃРѕРґРµСЂР¶Р°С‰РёС…СЃСЏ РЅР° С‚РµРєСѓС‰РµРј Р»РёСЃС‚Рµ РІ РґРёР°РїР°Р·РѕРЅРµ A2:A20 (Р·Р°РєРѕРјРјРµРЅС‚РёСЂРѕРІР°РЅРЅР°СЏ СЃС‚СЂРѕРєР° -  A1:Z1. РџСЂРѕР±Р»РµРјР° СЃ РІРѕР·РІСЂР°С‚РѕРј Р·РЅР°С‡РµРЅРёР№ РёР· СЏС‡РµРµРє AA1, AB1 С‚Р°Рє РєР°Рє С†РёРєР» РїСЂРѕС…РѕРґРёС‚ С‚РѕР»СЊРєРѕ РїРѕ Р°Р»С„Р°РІРёС‚Сѓ
 {
   var kolonkaplus = [];
-  for (var i=65; i<=90; i++)
+  for (var i=2; i<=19; i++)
   {
-    kolonkaplus.push(SpreadsheetApp.getActiveSheet().getRange(String.fromCharCode(i)+'1').getValues());
+    //kolonkaplus.push(SpreadsheetApp.getActiveSheet().getRange(String.fromCharCode(i)+'1').getValues());
+    kolonkaplus.push(SpreadsheetApp.getActiveSheet().getRange(String.fromCharCode(65)+(i)).getValues());
   }
   return kolonkaplus;
 }
 
-function in_array(value, array) //Проверяет массив на наличие в нем значения
+function in_array(value, array) //РџСЂРѕРІРµСЂСЏРµС‚ РјР°СЃСЃРёРІ РЅР° РЅР°Р»РёС‡РёРµ РІ РЅРµРј Р·РЅР°С‡РµРЅРёСЏ
 {
   for(var i = 0; i < array.length; i++) 
   {
